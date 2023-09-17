@@ -1,0 +1,1293 @@
++------------------------------------------+
+|Steps of making 2 tables                  |
++------------------------------------------+
+
+
+
+MariaDB [mis406]> create table customers(ID int auto_increment primary key, Name varchar(30),DOB date,salary int);
+Query OK, 0 rows affected (0.026 sec)
+MariaDB [mis406]> insert into customers(name,DOB,salary)values
+    -> ('Kamrul Ahsan','1998-5-8',40000),
+    -> ('Sayem Mollah','1998-9-4',39000),
+    -> ('Amit Shanto','1999-2-22',39000),
+    -> ('Sohan Hossain','1998-2-25',40000),
+    -> ('Rizwan Hassan','1998-9-25',41000),
+    -> ('Samaun Hossain','2000-4-17',35000),
+    -> ('Farhan Kabir','2000-5-25',34500),
+    -> ('Sadid Hossain','2001-1-18',35500),
+    -> ('Shoaib Khan','2001-7-29',35500);
+Query OK, 9 rows affected (0.007 sec)
+Records: 9  Duplicates: 0  Warnings: 0
+
+MariaDB [mis406]> select * from customers;
++----+----------------+------------+--------+
+| ID | Name           | DOB        | salary |
++----+----------------+------------+--------+
+|  1 | Kamrul Ahsan   | 1998-05-08 |  40000 |
+|  2 | Sayem Mollah   | 1998-09-04 |  39000 |
+|  3 | Amit Shanto    | 1999-02-22 |  39000 |
+|  4 | Sohan Hossain  | 1998-02-25 |  40000 |
+|  5 | Rizwan Hassan  | 1998-09-25 |  41000 |
+|  6 | Samaun Hossain | 2000-04-17 |  35000 |
+|  7 | Farhan Kabir   | 2000-05-25 |  34500 |
+|  8 | Sadid Hossain  | 2001-01-18 |  35500 |
+|  9 | Shoaib Khan    | 2001-07-29 |  35500 |
++----+----------------+------------+--------+
+9 rows in set (0.001 sec)
+MariaDB [mis406]> alter table customers
+    -> ADD COLUMN first_name VARCHAR(255) AFTER Name,
+    -> ADD COLUMN last_name VARCHAR(255) AFTER first_name;
+Query OK, 0 rows affected (0.013 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+MariaDB [mis406]> update customers
+    -> SET first_name = SUBSTRING_INDEX(Name, ' ', 1),
+    -> last_name = SUBSTRING_INDEX(Name, ' ', -1);
+Query OK, 9 rows affected (0.005 sec)
+Rows matched: 9  Changed: 9  Warnings: 0
+
+MariaDB [mis406]> select * from customers;
++----+----------------+------------+-----------+------------+--------+
+| ID | Name           | first_name | last_name | DOB        | salary |
++----+----------------+------------+-----------+------------+--------+
+|  1 | Kamrul Ahsan   | Kamrul     | Ahsan     | 1998-05-08 |  40000 |
+|  2 | Sayem Mollah   | Sayem      | Mollah    | 1998-09-04 |  39000 |
+|  3 | Amit Shanto    | Amit       | Shanto    | 1999-02-22 |  39000 |
+|  4 | Sohan Hossain  | Sohan      | Hossain   | 1998-02-25 |  40000 |
+|  5 | Rizwan Hassan  | Rizwan     | Hassan    | 1998-09-25 |  41000 |
+|  6 | Samaun Hossain | Samaun     | Hossain   | 2000-04-17 |  35000 |
+|  7 | Farhan Kabir   | Farhan     | Kabir     | 2000-05-25 |  34500 |
+|  8 | Sadid Hossain  | Sadid      | Hossain   | 2001-01-18 |  35500 |
+|  9 | Shoaib Khan    | Shoaib     | Khan      | 2001-07-29 |  35500 |
++----+----------------+------------+-----------+------------+--------+
+9 rows in set (0.000 sec)
+
+MariaDB [mis406]> alter table customers drop column name;
+Query OK, 0 rows affected (0.009 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+MariaDB [mis406]> select * from customers;
++----+------------+-----------+------------+--------+
+| ID | first_name | last_name | DOB        | salary |
++----+------------+-----------+------------+--------+
+|  1 | Kamrul     | Ahsan     | 1998-05-08 |  40000 |
+|  2 | Sayem      | Mollah    | 1998-09-04 |  39000 |
+|  3 | Amit       | Shanto    | 1999-02-22 |  39000 |
+|  4 | Sohan      | Hossain   | 1998-02-25 |  40000 |
+|  5 | Rizwan     | Hassan    | 1998-09-25 |  41000 |
+|  6 | Samaun     | Hossain   | 2000-04-17 |  35000 |
+|  7 | Farhan     | Kabir     | 2000-05-25 |  34500 |
+|  8 | Sadid      | Hossain   | 2001-01-18 |  35500 |
+|  9 | Shoaib     | Khan      | 2001-07-29 |  35500 |
++----+------------+-----------+------------+--------+
+9 rows in set (0.000 sec)
+MariaDB [mis406]> alter table customers add column orderID int after ID;
+Query OK, 0 rows affected (0.006 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+MariaDB [mis406]> update customer set orderid=101 where Id=1;
+ERROR 1146 (42S02): Table 'mis406.customer' doesn't exist
+MariaDB [mis406]> update customers set orderid=101 where Id=1;
+Query OK, 1 row affected (0.006 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+MariaDB [mis406]> update customers set orderid=102 where Id=2;
+Query OK, 1 row affected (0.003 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+MariaDB [mis406]> update customers set orderid=103 where Id=3;
+Query OK, 1 row affected (0.003 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+MariaDB [mis406]> update customers set orderid=104 where Id=4;
+Query OK, 1 row affected (0.003 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+MariaDB [mis406]> update customers set orderid=105 where Id=5;
+Query OK, 1 row affected (0.002 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+MariaDB [mis406]> update customers set orderid=106 where Id=6;
+Query OK, 1 row affected (0.003 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+MariaDB [mis406]> update customers set orderid=107 where Id=7;
+Query OK, 1 row affected (0.003 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+MariaDB [mis406]> update customers set orderid=108 where Id=8;
+Query OK, 1 row affected (0.003 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+MariaDB [mis406]> update customers set orderid=109 where Id=9;
+Query OK, 1 row affected (0.003 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+MariaDB [mis406]> select *from customers;
++----+---------+------------+-----------+------------+--------+
+| ID | orderID | first_name | last_name | DOB        | salary |
++----+---------+------------+-----------+------------+--------+
+|  1 |     101 | Kamrul     | Ahsan     | 1998-05-08 |  40000 |
+|  2 |     102 | Sayem      | Mollah    | 1998-09-04 |  39000 |
+|  3 |     103 | Amit       | Shanto    | 1999-02-22 |  39000 |
+|  4 |     104 | Sohan      | Hossain   | 1998-02-25 |  40000 |
+|  5 |     105 | Rizwan     | Hassan    | 1998-09-25 |  41000 |
+|  6 |     106 | Samaun     | Hossain   | 2000-04-17 |  35000 |
+|  7 |     107 | Farhan     | Kabir     | 2000-05-25 |  34500 |
+|  8 |     108 | Sadid      | Hossain   | 2001-01-18 |  35500 |
+|  9 |     109 | Shoaib     | Khan      | 2001-07-29 |  35500 |
++----+---------+------------+-----------+------------+--------+
+9 rows in set (0.000 sec)
+MariaDB [mis406]> create table orders(order_id int not null auto_increment primary key,Quantity int, Price int,OrderDate date);
+Query OK, 0 rows affected (0.011 sec)
+
+
+MariaDB [mis406]> insert into orders(quantity,price,orderdate) values
+    -> (5,500,'2023-8-5'),
+    -> (4,950,'2023-8-6');
+Query OK, 2 rows affected (0.003 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+MariaDB [mis406]> update orders set order_id = order_id + 100;
+Query OK, 2 rows affected (0.002 sec)
+Rows matched: 2  Changed: 2  Warnings: 0
+
+MariaDB [mis406]> select *from orders;
++----------+----------+-------+------------+
+| order_id | Quantity | Price | OrderDate  |
++----------+----------+-------+------------+
+|      101 |        5 |   500 | 2023-08-05 |
+|      102 |        4 |   950 | 2023-08-06 |
++----------+----------+-------+------------+
+2 rows in set (0.000 sec)
+MariaDB [mis406]> insert into orders(quantity,price,orderdate) values
+    -> (2,100,'2023-8-4'),
+    -> (2,100,'2023-8-4'),
+    -> (2,350,'2023-8-10'),
+    -> (8,1050,'2023-8-14'),
+    -> (5,600,'2023-8-5'),
+    -> (3,210,'2023-8-1');
+Query OK, 6 rows affected (0.003 sec)
+Records: 6  Duplicates: 0  Warnings: 0
+
+MariaDB [mis406]> insert into orders(quantity,price,orderdate) values
+    -> (9,1950,'2023-8-10'),
+    -> (4,560,'2023-8-15'),
+    -> (7,1290,'2023-8-15'),
+    -> (5,670,'2023-8-12'),
+    -> (5,750,'2023-8-16'),
+    -> (3,299,'2023-8-16'),
+    -> (2,205,'2023-8-15');
+Query OK, 7 rows affected (0.003 sec)
+Records: 7  Duplicates: 0  Warnings: 0
+
+MariaDB [mis406]> select * from orders;
++----------+----------+-------+------------+
+| order_id | Quantity | Price | OrderDate  |
++----------+----------+-------+------------+
+|      101 |        5 |   500 | 2023-08-05 |
+|      102 |        4 |   950 | 2023-08-06 |
+|      103 |        2 |   100 | 2023-08-04 |
+|      104 |        2 |   100 | 2023-08-04 |
+|      105 |        2 |   350 | 2023-08-10 |
+|      106 |        8 |  1050 | 2023-08-14 |
+|      107 |        5 |   600 | 2023-08-05 |
+|      108 |        3 |   210 | 2023-08-01 |
+|      109 |        9 |  1950 | 2023-08-10 |
+|      110 |        4 |   560 | 2023-08-15 |
+|      111 |        7 |  1290 | 2023-08-15 |
+|      112 |        5 |   670 | 2023-08-12 |
+|      113 |        5 |   750 | 2023-08-16 |
+|      114 |        3 |   299 | 2023-08-16 |
+|      115 |        2 |   205 | 2023-08-15 |
++----------+----------+-------+------------+
+15 rows in set (0.000 sec)
+alter table orders modify column order_id int;
+Query OK, 0 rows affected (0.003 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+MariaDB [mis406]> alter table orders drop primary key;
+Query OK, 15 rows affected (0.032 sec)
+Records: 15  Duplicates: 0  Warnings: 0
+
+MariaDB [mis406]> update orders set order_id=105 where order_id=110;
+Query OK, 1 row affected (0.003 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+MariaDB [mis406]> update orders set order_id=101 where order_id=111;
+Query OK, 1 row affected (0.003 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+MariaDB [mis406]> update orders set order_id=106 where order_id=112;
+Query OK, 1 row affected (0.003 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+MariaDB [mis406]> update orders set order_id=102 where order_id=113;
+Query OK, 1 row affected (0.003 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+MariaDB [mis406]> update orders set order_id=107 where order_id=114;
+Query OK, 1 row affected (0.003 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+MariaDB [mis406]> update orders set order_id=103 where order_id=115;
+Query OK, 1 row affected (0.003 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+MariaDB [mis406]> select * from orders;
++----------+----------+-------+------------+
+| order_id | Quantity | Price | OrderDate  |
++----------+----------+-------+------------+
+|      101 |        5 |   500 | 2023-08-05 |
+|      102 |        4 |   950 | 2023-08-06 |
+|      103 |        2 |   100 | 2023-08-04 |
+|      104 |        2 |   100 | 2023-08-04 |
+|      105 |        2 |   350 | 2023-08-10 |
+|      106 |        8 |  1050 | 2023-08-14 |
+|      107 |        5 |   600 | 2023-08-05 |
+|      108 |        3 |   210 | 2023-08-01 |
+|      109 |        9 |  1950 | 2023-08-10 |
+|      105 |        4 |   560 | 2023-08-15 |
+|      101 |        7 |  1290 | 2023-08-15 |
+|      106 |        5 |   670 | 2023-08-12 |
+|      102 |        5 |   750 | 2023-08-16 |
+|      107 |        3 |   299 | 2023-08-16 |
+|      103 |        2 |   205 | 2023-08-15 |
++----------+----------+-------+------------+
+15 rows in set (0.001 sec)
+
+
++------------------------------------------------------+
+|two tables created				       |
++------------------------------------------------------+
+
+
+
+
+MariaDB [mis406]> select * from customers;
++----+---------+------------+-----------+------------+--------+
+| ID | orderID | first_name | last_name | DOB        | salary |
++----+---------+------------+-----------+------------+--------+
+|  1 |     101 | Kamrul     | Ahsan     | 1998-05-08 |  40000 |
+|  2 |     102 | Sayem      | Mollah    | 1998-09-04 |  39000 |
+|  3 |     103 | Amit       | Shanto    | 1999-02-22 |  39000 |
+|  4 |     104 | Sohan      | Hossain   | 1998-02-25 |  40000 |
+|  5 |     105 | Rizwan     | Hassan    | 1998-09-25 |  41000 |
+|  6 |     106 | Samaun     | Hossain   | 2000-04-17 |  35000 |
+|  7 |     107 | Farhan     | Kabir     | 2000-05-25 |  34500 |
+|  8 |     108 | Sadid      | Hossain   | 2001-01-18 |  35500 |
+|  9 |     109 | Shoaib     | Khan      | 2001-07-29 |  35500 |
++----+---------+------------+-----------+------------+--------+
+9 rows in set (0.001 sec)
+
+MariaDB [mis406]> select * from orders;
++----------+----------+-------+------------+
+| order_id | Quantity | Price | OrderDate  |
++----------+----------+-------+------------+
+|      101 |        5 |   500 | 2023-08-05 |
+|      102 |        4 |   950 | 2023-08-06 |
+|      103 |        2 |   100 | 2023-08-04 |
+|      104 |        2 |   100 | 2023-08-04 |
+|      105 |        2 |   350 | 2023-08-10 |
+|      106 |        8 |  1050 | 2023-08-14 |
+|      107 |        5 |   600 | 2023-08-05 |
+|      108 |        3 |   210 | 2023-08-01 |
+|      109 |        9 |  1950 | 2023-08-10 |
+|      105 |        4 |   560 | 2023-08-15 |
+|      101 |        7 |  1290 | 2023-08-15 |
+|      106 |        5 |   670 | 2023-08-12 |
+|      102 |        5 |   750 | 2023-08-16 |
+|      107 |        3 |   299 | 2023-08-16 |
+|      103 |        2 |   205 | 2023-08-15 |
++----------+----------+-------+------------+
+15 rows in set (0.000 sec)
+
+
++------------------------------------------------------------------+
+|1. Aggregate Functions (AVG, Count, MAX, MIN, STD, SUM, Variance) |
++------------------------------------------------------------------+
+
+
+MariaDB [mis406]> select avg(salary),std(salary),variance(salary) from customers;
++-------------+-------------+------------------+
+| avg(salary) | std(salary) | variance(salary) |
++-------------+-------------+------------------+
+|  37722.2222 |   2404.9845 |     5783950.6173 |
++-------------+-------------+------------------+
+1 row in set (0.000 sec)
+
+MariaDB [mis406]> select max(price),count(quantity),min(price),sum(quantity*price),std(price) from orders;
++------------+-----------------+------------+---------------------+------------+
+| max(price) | count(quantity) | min(price) | sum(quantity*price) | std(price) |
++------------+-----------------+------------+---------------------+------------+
+|       1950 |              15 |        100 |               56657 |   489.9720 |
++------------+-----------------+------------+---------------------+------------+
+1 row in set (0.000 sec)
+
+
+
+
+
++------------------------------------------------------------------+
+|2. Backup & Load (Export, Import)                                 |
++------------------------------------------------------------------+
+
+MariaDB [mis406]> select * from customers
+    -> into outfile 'G:/Customers.txt'
+    -> fields terminated by ',';
+Query OK, 9 rows affected, 1 warning (2.984 sec)
+
+
+
+MariaDB [mis406]> create table forimport(Date varchar(30),IT_Dept varchar(50),costelement varchar(30),Actual varchar(30));
+Query OK, 0 rows affected (0.011 sec)
+MariaDB [mis406]> load data infile 'F:\importmysql.csv'
+    -> into table forimport
+    -> fields terminated by ','
+    -> lines terminated by'\n'
+    -> ignore 1 lines;
+Query OK, 17 rows affected, 17 warnings (0.004 sec)
+Records: 17  Deleted: 0  Skipped: 0  Warnings: 17
+
+MariaDB [mis406]> select *from forimport;
++----------+----------------+----------------------+----------------+
+| Date     | IT_Dept        | costelement          | Actual         |
++----------+----------------+----------------------+----------------+
+| 1/1/2020 | Administration | External Labor       | United Kingdom |
+| 1/1/2020 | Administration | External Labor       | USA            |
+| 1/1/2020 | Administration | Hardware Maintenance | USA            |
+| 1/1/2020 | Administration | Inbound Allocations  | United Kingdom |
+| 1/1/2020 | Administration | Internal Labor       | Italy          |
+| 1/1/2020 | Administration | Internal Labor       | United Kingdom |
+| 1/1/2020 | Administration | Internal Labor       | USA            |
+| 1/1/2020 | Administration | Legal                | USA            |
+| 1/1/2020 | Administration | Moving               | USA            |
+| 1/1/2020 | Administration | Other                | Italy          |
+| 1/1/2020 | Administration | Other                | United Kingdom |
+| 1/1/2020 | Administration | Other                | USA            |
+| 1/1/2020 | Administration | Outbound Allocations | United Kingdom |
+| 1/1/2020 | Administration | Severance            | Italy          |
+| 1/1/2020 | Administration | Software             | USA            |
+| 1/1/2020 | Administration | Supplies             | USA            |
+| 1/1/2020 | Administration | Telecomm             | Italy          |
++----------+----------------+----------------------+----------------+
+17 rows in set (0.000 sec)
+
+
+
++------------------------------------------------------------------+
+|3. Command MySQL (Drop, Show, Version, Exit)                      |
++------------------------------------------------------------------+
+
+MariaDB [assignment2]> use mis406;
+Database changed
+MariaDB [mis406]> show tables;
++------------------+
+| Tables_in_mis406 |
++------------------+
+| customers        |
+| forimport        |
+| orders           |
+| personal         |
+| std              |
+| subm             |
+| t1               |
+| tab1             |
++------------------+
+8 rows in set (0.001 sec)
+
+MariaDB [mis406]> drop table forimport;
+Query OK, 0 rows affected (0.013 sec)
+
+MariaDB [mis406]> select version();
++-----------------+
+| version()       |
++-----------------+
+| 10.4.27-MariaDB |
++-----------------+
+1 row in set (0.002 sec)
+
+MariaDB [mis406]> exit;
+Bye
+
+c:\xampp\mysql\bin>
++------------------------------------------------------------------+
+|4. Regular Expression                                             |
++------------------------------------------------------------------+
+MariaDB [mis406]> select Orderid,first_name,last_name,salary from customers;
++---------+------------+-----------+--------+
+| Orderid | first_name | last_name | salary |
++---------+------------+-----------+--------+
+|     101 | Kamrul     | Ahsan     |  40000 |
+|     102 | Sayem      | Mollah    |  39000 |
+|     103 | Amit       | Shanto    |  39000 |
+|     104 | Sohan      | Hossain   |  40000 |
+|     105 | Rizwan     | Hassan    |  41000 |
+|     106 | Samaun     | Hossain   |  35000 |
+|     107 | Farhan     | Kabir     |  34500 |
+|     108 | Sadid      | Hossain   |  35500 |
+|     109 | Shoaib     | Khan      |  35500 |
+|     110 | Sarhan     | Hassan    |  42000 |
++---------+------------+-----------+--------+
+10 rows in set (0.001 sec)
++------------------------------------------------------------------+
+|5. Data Type (Int, Varchar, Date, Decimal, Float, Auto Increment) |
++------------------------------------------------------------------+
+
+MariaDB [mis406]> create table captain(ID int auto_increment primary key,
+    -> Name varchar(30),CGPA decimal(5,2),GraduatedON date,AGE float);
+Query OK, 0 rows affected (0.021 sec)
+
+MariaDB [mis406]> desc captain;
++-------------+--------------+------+-----+---------+----------------+
+| Field       | Type         | Null | Key | Default | Extra          |
++-------------+--------------+------+-----+---------+----------------+
+| ID          | int(11)      | NO   | PRI | NULL    | auto_increment |
+| Name        | varchar(30)  | YES  |     | NULL    |                |
+| CGPA        | decimal(5,2) | YES  |     | NULL    |                |
+| GraduatedON | date         | YES  |     | NULL    |                |
+| AGE         | float        | YES  |     | NULL    |                |
++-------------+--------------+------+-----+---------+----------------+
+5 rows in set (0.008 sec)
+
++------------------------------------------------------------------+
+|6. Database (Create, Show, Use, Drop)                             |
++------------------------------------------------------------------+
+
+MariaDB [assignment2]> show databases;
++--------------------+
+| Database           |
++--------------------+
+| 21staug            |
+| assignment2        |
+| importfile1        |
+| importin           |
+| information_schema |
+| lab1               |
+| lab2               |
+| mis406             |
+| multiverse.com     |
+| mysql              |
+| performance_schema |
+| phpmyadmin         |
+| riz_1              |
++--------------------+
+13 rows in set (0.001 sec)
+
+MariaDB [assignment2]> use assignment2;
+Database changed
+MariaDB [assignment2]> drop database assignment2;
+Query OK, 0 rows affected (0.004 sec)
+
+MariaDB [(none)]> create database batman;
+Query OK, 1 row affected (0.001 sec)
+
+MariaDB [(none)]> show databases;
++--------------------+
+| Database           |
++--------------------+
+| 21staug            |
+| batman             |
+| importfile1        |
+| importin           |
+| information_schema |
+| lab1               |
+| lab2               |
+| mis406             |
+| multiverse.com     |
+| mysql              |
+| performance_schema |
+| phpmyadmin         |
+| riz_1              |
++--------------------+
+13 rows in set (0.001 sec)
+
++------------------------------------------------------------------+
+|7. Date & Time (CurDate, Now, Datediff)                           |
++------------------------------------------------------------------+
+MariaDB [mis406]> select orderid,
+    -> concat(first_name,' ',last_name) as FullName,
+    -> DOB,round(datediff(curdate(),DOB)/365.25,2) as AGE
+    -> from customers;
++---------+----------------+------------+-------+
+| orderid | FullName       | DOB        | AGE   |
++---------+----------------+------------+-------+
+|     101 | Kamrul Ahsan   | 1998-05-08 | 25.29 |
+|     102 | Sayem Mollah   | 1998-09-04 | 24.97 |
+|     103 | Amit Shanto    | 1999-02-22 | 24.50 |
+|     104 | Sohan Hossain  | 1998-02-25 | 25.49 |
+|     105 | Rizwan Hassan  | 1998-09-25 | 24.91 |
+|     106 | Samaun Hossain | 2000-04-17 | 23.35 |
+|     107 | Farhan Kabir   | 2000-05-25 | 23.24 |
+|     108 | Sadid Hossain  | 2001-01-18 | 22.59 |
+|     109 | Shoaib Khan    | 2001-07-29 | 22.07 |
++---------+----------------+------------+-------+
+9 rows in set (0.001 sec)
+
+MariaDB [mis406]> select order_id,quantity as ITEMS_ordered, orderdate,
+    -> datediff(now(),orderdate) as DaysRemained from orders;
++----------+---------------+------------+--------------+
+| order_id | ITEMS_ordered | orderdate  | DaysRemained |
++----------+---------------+------------+--------------+
+|      101 |             5 | 2023-08-05 |           18 |
+|      102 |             4 | 2023-08-06 |           17 |
+|      103 |             2 | 2023-08-04 |           19 |
+|      104 |             2 | 2023-08-04 |           19 |
+|      105 |             2 | 2023-08-10 |           13 |
+|      106 |             8 | 2023-08-14 |            9 |
+|      107 |             5 | 2023-08-05 |           18 |
+|      108 |             3 | 2023-08-01 |           22 |
+|      109 |             9 | 2023-08-10 |           13 |
+|      105 |             4 | 2023-08-15 |            8 |
+|      101 |             7 | 2023-08-15 |            8 |
+|      106 |             5 | 2023-08-12 |           11 |
+|      102 |             5 | 2023-08-16 |            7 |
+|      107 |             3 | 2023-08-16 |            7 |
+|      103 |             2 | 2023-08-15 |            8 |
++----------+---------------+------------+--------------+
+15 rows in set (0.001 sec)
++------------------------------------------------------------------+
+|8. Text Search (Like, Pattern matching)                           |
++------------------------------------------------------------------+
+
+MariaDB [mis406]> select * from customers where first_name LIKE 'S%';
++----+---------+------------+-----------+------------+--------+
+| ID | orderID | first_name | last_name | DOB        | salary |
++----+---------+------------+-----------+------------+--------+
+|  2 |     102 | Sayem      | Mollah    | 1998-09-04 |  39000 |
+|  4 |     104 | Sohan      | Hossain   | 1998-02-25 |  40000 |
+|  6 |     106 | Samaun     | Hossain   | 2000-04-17 |  35000 |
+|  8 |     108 | Sadid      | Hossain   | 2001-01-18 |  35500 |
+|  9 |     109 | Shoaib     | Khan      | 2001-07-29 |  35500 |
++----+---------+------------+-----------+------------+--------+
+5 rows in set (0.004 sec)
+
+MariaDB [mis406]> select * from customers where last_name LIKE '%ain';
++----+---------+------------+-----------+------------+--------+
+| ID | orderID | first_name | last_name | DOB        | salary |
++----+---------+------------+-----------+------------+--------+
+|  4 |     104 | Sohan      | Hossain   | 1998-02-25 |  40000 |
+|  6 |     106 | Samaun     | Hossain   | 2000-04-17 |  35000 |
+|  8 |     108 | Sadid      | Hossain   | 2001-01-18 |  35500 |
++----+---------+------------+-----------+------------+--------+
+3 rows in set (0.001 sec)
+
++------------------------------------------------------------------+
+|9. Function (And, Or, Between, In, If, Concat, Distinct, Count)   |
++------------------------------------------------------------------+
+MariaDB [mis406]> select * from customers;
++----+---------+------------+-----------+------------+--------+
+| ID | orderID | first_name | last_name | DOB        | salary |
++----+---------+------------+-----------+------------+--------+
+|  1 |     101 | Kamrul     | Ahsan     | 1998-05-08 |  40000 |
+|  2 |     102 | Sayem      | Mollah    | 1998-09-04 |  39000 |
+|  3 |     103 | Amit       | Shanto    | 1999-02-22 |  39000 |
+|  4 |     104 | Sohan      | Hossain   | 1998-02-25 |  40000 |
+|  5 |     105 | Rizwan     | Hassan    | 1998-09-25 |  41000 |
+|  6 |     106 | Samaun     | Hossain   | 2000-04-17 |  35000 |
+|  7 |     107 | Farhan     | Kabir     | 2000-05-25 |  34500 |
+|  8 |     108 | Sadid      | Hossain   | 2001-01-18 |  35500 |
+|  9 |     109 | Shoaib     | Khan      | 2001-07-29 |  35500 |
++----+---------+------------+-----------+------------+--------+
+9 rows in set (0.005 sec)
+
+MariaDB [mis406]> select * from orders;
++----------+----------+-------+------------+
+| order_id | Quantity | Price | OrderDate  |
++----------+----------+-------+------------+
+|      101 |        5 |   500 | 2023-08-05 |
+|      102 |        4 |   950 | 2023-08-06 |
+|      103 |        2 |   100 | 2023-08-04 |
+|      104 |        2 |   100 | 2023-08-04 |
+|      105 |        2 |   350 | 2023-08-10 |
+|      106 |        8 |  1050 | 2023-08-14 |
+|      107 |        5 |   600 | 2023-08-05 |
+|      108 |        3 |   210 | 2023-08-01 |
+|      109 |        9 |  1950 | 2023-08-10 |
+|      105 |        4 |   560 | 2023-08-15 |
+|      101 |        7 |  1290 | 2023-08-15 |
+|      106 |        5 |   670 | 2023-08-12 |
+|      102 |        5 |   750 | 2023-08-16 |
+|      107 |        3 |   299 | 2023-08-16 |
+|      103 |        2 |   205 | 2023-08-15 |
++----------+----------+-------+------------+
+15 rows in set (0.002 sec)
+
+
++---------------------------------+
+|    Use of Between,And,Concat    |
++---------------------------------+
+MariaDB [mis406]> select concat(first_name,' ',last_name),orderid,quantity,price,orderdate
+    -> from customers, orders
+    -> where customers.orderid=orders.order_id
+    -> and orders.orderdate between '2023-08-10' and '2023-08-16'
+    -> group by orders.quantity
+    -> order by orders.quantity desc;
++----------------------------------+---------+----------+-------+------------+
+| concat(first_name,' ',last_name) | orderid | quantity | price | orderdate  |
++----------------------------------+---------+----------+-------+------------+
+| Shoaib Khan                      |     109 |        9 |  1950 | 2023-08-10 |
+| Samaun Hossain                   |     106 |        8 |  1050 | 2023-08-14 |
+| Kamrul Ahsan                     |     101 |        7 |  1290 | 2023-08-15 |
+| Samaun Hossain                   |     106 |        5 |   670 | 2023-08-12 |
+| Rizwan Hassan                    |     105 |        4 |   560 | 2023-08-15 |
+| Farhan Kabir                     |     107 |        3 |   299 | 2023-08-16 |
+| Rizwan Hassan                    |     105 |        2 |   350 | 2023-08-10 |
++----------------------------------+---------+----------+-------+------------+
+7 rows in set (0.001 sec)
++---------------------------------+
+|    Use of IF,Distinct           |
++---------------------------------+
+
+MariaDB [mis406]> select distinct orderid,concat(first_name,' ',last_name) as Name,
+    -> quantity,price,
+    -> if(((Quantity*price)<600), 'Bad',
+    -> if(((Quantity*price)<3000), 'Good','Excellent')) as CommentOnSales from orders,customers
+    -> where customers.orderid=orders.order_id order by orders.price;
++---------+----------------+----------+-------+----------------+
+| orderid | Name           | quantity | price | CommentOnSales |
++---------+----------------+----------+-------+----------------+
+|     103 | Amit Shanto    |        2 |   100 | Bad            |
+|     104 | Sohan Hossain  |        2 |   100 | Bad            |
+|     103 | Amit Shanto    |        2 |   205 | Bad            |
+|     108 | Sadid Hossain  |        3 |   210 | Good           |
+|     107 | Farhan Kabir   |        3 |   299 | Good           |
+|     105 | Rizwan Hassan  |        2 |   350 | Good           |
+|     101 | Kamrul Ahsan   |        5 |   500 | Good           |
+|     105 | Rizwan Hassan  |        4 |   560 | Good           |
+|     107 | Farhan Kabir   |        5 |   600 | Excellent      |
+|     106 | Samaun Hossain |        5 |   670 | Excellent      |
+|     102 | Sayem Mollah   |        5 |   750 | Excellent      |
+|     102 | Sayem Mollah   |        4 |   950 | Excellent      |
+|     106 | Samaun Hossain |        8 |  1050 | Excellent      |
+|     101 | Kamrul Ahsan   |        7 |  1290 | Excellent      |
+|     109 | Shoaib Khan    |        9 |  1950 | Excellent      |
++---------+----------------+----------+-------+----------------+
+15 rows in set (0.001 sec)
++---------------------------------+
+|         Use of OR,IN            |
++---------------------------------+
+
+MariaDB [mis406]> select * from orders
+    -> where(quantity>=5 or price>=500)
+    -> and order_id in (107,102,109);
++----------+----------+-------+------------+
+| order_id | Quantity | Price | OrderDate  |
++----------+----------+-------+------------+
+|      102 |        4 |   950 | 2023-08-06 |
+|      107 |        5 |   600 | 2023-08-05 |
+|      109 |        9 |  1950 | 2023-08-10 |
+|      102 |        5 |   750 | 2023-08-16 |
++----------+----------+-------+------------+
+4 rows in set (0.001 sec)
+
++------------------------------------------------------------------+
+|10. Size / Space (of Database / Tables)                           |
++------------------------------------------------------------------+
+MariaDB [mis406]> select table_name as 'sizeoftable',
+    ->  round(((data_length + index_length) / 1024), 3)as 'Size (KB)'
+    -> from information_schema.tables where table_schema= 'mis406'
+    -> and (table_name='customers' or table_name='orders');
++-------------+-----------+
+| sizeoftable | Size (KB) |
++-------------+-----------+
+| customers   |    16.000 |
+| orders      |    16.000 |
++-------------+-----------+
+2 rows in set (0.001 sec)
++------------------------------------------------------------------+
+|11. Select Clause                                                 |
++------------------------------------------------------------------+
+MariaDB [mis406]> select first_name ,DOB from customers;
++------------+------------+
+| first_name | DOB        |
++------------+------------+
+| Kamrul     | 1998-05-08 |
+| Sayem      | 1998-09-04 |
+| Amit       | 1999-02-22 |
+| Sohan      | 1998-02-25 |
+| Rizwan     | 1998-09-25 |
+| Samaun     | 2000-04-17 |
+| Farhan     | 2000-05-25 |
+| Sadid      | 2001-01-18 |
+| Shoaib     | 2001-07-29 |
++------------+------------+
+9 rows in set (0.001 sec)
++------------------------------------------------------------------+
+|12. View (Partial, full)                                          |
++------------------------------------------------------------------+
++---------------------------------+
+|          Full View              |
++---------------------------------+
+
+MariaDB [mis406]> create view NamesOrders as
+    -> select * from customers,orders
+    -> where customers.orderid=orders.order_id;
+Query OK, 0 rows affected (0.004 sec)
+
+MariaDB [mis406]> select * from namesorders;
++----+---------+------------+-----------+------------+--------+----------+----------+-------+------------+
+| ID | orderID | first_name | last_name | DOB        | salary | order_id | Quantity | Price | OrderDate  |
++----+---------+------------+-----------+------------+--------+----------+----------+-------+------------+
+|  1 |     101 | Kamrul     | Ahsan     | 1998-05-08 |  40000 |      101 |        5 |   500 | 2023-08-05 |
+|  2 |     102 | Sayem      | Mollah    | 1998-09-04 |  39000 |      102 |        4 |   950 | 2023-08-06 |
+|  3 |     103 | Amit       | Shanto    | 1999-02-22 |  39000 |      103 |        2 |   100 | 2023-08-04 |
+|  4 |     104 | Sohan      | Hossain   | 1998-02-25 |  40000 |      104 |        2 |   100 | 2023-08-04 |
+|  5 |     105 | Rizwan     | Hassan    | 1998-09-25 |  41000 |      105 |        2 |   350 | 2023-08-10 |
+|  6 |     106 | Samaun     | Hossain   | 2000-04-17 |  35000 |      106 |        8 |  1050 | 2023-08-14 |
+|  7 |     107 | Farhan     | Kabir     | 2000-05-25 |  34500 |      107 |        5 |   600 | 2023-08-05 |
+|  8 |     108 | Sadid      | Hossain   | 2001-01-18 |  35500 |      108 |        3 |   210 | 2023-08-01 |
+|  9 |     109 | Shoaib     | Khan      | 2001-07-29 |  35500 |      109 |        9 |  1950 | 2023-08-10 |
+|  5 |     105 | Rizwan     | Hassan    | 1998-09-25 |  41000 |      105 |        4 |   560 | 2023-08-15 |
+|  1 |     101 | Kamrul     | Ahsan     | 1998-05-08 |  40000 |      101 |        7 |  1290 | 2023-08-15 |
+|  6 |     106 | Samaun     | Hossain   | 2000-04-17 |  35000 |      106 |        5 |   670 | 2023-08-12 |
+|  2 |     102 | Sayem      | Mollah    | 1998-09-04 |  39000 |      102 |        5 |   750 | 2023-08-16 |
+|  7 |     107 | Farhan     | Kabir     | 2000-05-25 |  34500 |      107 |        3 |   299 | 2023-08-16 |
+|  3 |     103 | Amit       | Shanto    | 1999-02-22 |  39000 |      103 |        2 |   205 | 2023-08-15 |
++----+---------+------------+-----------+------------+--------+----------+----------+-------+------------+
+15 rows in set (0.001 sec)
+
++---------------------------------+
+|          Partial View           |
++---------------------------------+
+
+MariaDB [mis406]> create view HighSalary as
+    -> select * from customers where salary>40000;
+Query OK, 0 rows affected (0.004 sec)
+
+MariaDB [mis406]> select * from Highsalary;
++----+---------+------------+-----------+------------+--------+
+| ID | orderID | first_name | last_name | DOB        | salary |
++----+---------+------------+-----------+------------+--------+
+|  5 |     105 | Rizwan     | Hassan    | 1998-09-25 |  41000 |
++----+---------+------------+-----------+------------+--------+
+1 row in set (0.001 sec)
+
++------------------------------------------------------------------+
+|13. Where, Group By, Order By                                     |
++------------------------------------------------------------------+
+
+
+MariaDB [mis406]> select concat(first_name,' ',last_name) as fullName, quantity,price
+    -> from customers,orders
+    -> where customers.orderid=orders.order_id
+    -> group by customers.first_name order by orders.quantity;
++----------------+----------+-------+
+| fullName       | quantity | price |
++----------------+----------+-------+
+| Amit Shanto    |        2 |   100 |
+| Sohan Hossain  |        2 |   100 |
+| Rizwan Hassan  |        2 |   350 |
+| Sadid Hossain  |        3 |   210 |
+| Sayem Mollah   |        4 |   950 |
+| Kamrul Ahsan   |        5 |   500 |
+| Farhan Kabir   |        5 |   600 |
+| Samaun Hossain |        8 |  1050 |
+| Shoaib Khan    |        9 |  1950 |
++----------------+----------+-------+
+9 rows in set (0.001 sec)
+
+
++------------------------------------------------------------------+
+|14. Insert, Delete, Update, Alter                                 |
++------------------------------------------------------------------+
+MariaDB [mis406]> insert into customers(orderid,first_name,last_name,DOB,salary)values
+    -> (110,'Sarhan','Hassan','1996-10-31',42000),
+    -> (111,'ASM','Farhan','1996-5-18',45000);
+Query OK, 2 rows affected (0.008 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+MariaDB [mis406]> select *from customers;
++----+---------+------------+-----------+------------+--------+
+| ID | orderID | first_name | last_name | DOB        | salary |
++----+---------+------------+-----------+------------+--------+
+|  1 |     101 | Kamrul     | Ahsan     | 1998-05-08 |  40000 |
+|  2 |     102 | Sayem      | Mollah    | 1998-09-04 |  39000 |
+|  3 |     103 | Amit       | Shanto    | 1999-02-22 |  39000 |
+|  4 |     104 | Sohan      | Hossain   | 1998-02-25 |  40000 |
+|  5 |     105 | Rizwan     | Hassan    | 1998-09-25 |  41000 |
+|  6 |     106 | Samaun     | Hossain   | 2000-04-17 |  35000 |
+|  7 |     107 | Farhan     | Kabir     | 2000-05-25 |  34500 |
+|  8 |     108 | Sadid      | Hossain   | 2001-01-18 |  35500 |
+|  9 |     109 | Shoaib     | Khan      | 2001-07-29 |  35500 |
+| 10 |     110 | Sarhan     | Hassan    | 1996-10-31 |  42000 |
+| 11 |     111 | ASM        | Farhan    | 1996-05-18 |  45000 |
++----+---------+------------+-----------+------------+--------+
+11 rows in set (0.001 sec)
+MariaDB [mis406]> delete from customers where orderid=111;
+Query OK, 1 row affected (0.004 sec)
+
+MariaDB [mis406]> select * from customers;
++----+---------+------------+-----------+------------+--------+
+| ID | orderID | first_name | last_name | DOB        | salary |
++----+---------+------------+-----------+------------+--------+
+|  1 |     101 | Kamrul     | Ahsan     | 1998-05-08 |  40000 |
+|  2 |     102 | Sayem      | Mollah    | 1998-09-04 |  39000 |
+|  3 |     103 | Amit       | Shanto    | 1999-02-22 |  39000 |
+|  4 |     104 | Sohan      | Hossain   | 1998-02-25 |  40000 |
+|  5 |     105 | Rizwan     | Hassan    | 1998-09-25 |  41000 |
+|  6 |     106 | Samaun     | Hossain   | 2000-04-17 |  35000 |
+|  7 |     107 | Farhan     | Kabir     | 2000-05-25 |  34500 |
+|  8 |     108 | Sadid      | Hossain   | 2001-01-18 |  35500 |
+|  9 |     109 | Shoaib     | Khan      | 2001-07-29 |  35500 |
+| 10 |     110 | Sarhan     | Hassan    | 1996-10-31 |  42000 |
++----+---------+------------+-----------+------------+--------+
+10 rows in set (0.000 sec)
+
+MariaDB [mis406]> update orders set order_id=110 where order_id=109;
+Query OK, 1 row affected (0.006 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+MariaDB [mis406]> select * from orders;
++----------+----------+-------+------------+
+| order_id | Quantity | Price | OrderDate  |
++----------+----------+-------+------------+
+|      101 |        5 |   500 | 2023-08-05 |
+|      102 |        4 |   950 | 2023-08-06 |
+|      103 |        2 |   100 | 2023-08-04 |
+|      104 |        2 |   100 | 2023-08-04 |
+|      105 |        2 |   350 | 2023-08-10 |
+|      106 |        8 |  1050 | 2023-08-14 |
+|      107 |        5 |   600 | 2023-08-05 |
+|      108 |        3 |   210 | 2023-08-01 |
+|      110 |        9 |  1950 | 2023-08-10 |
+|      105 |        4 |   560 | 2023-08-15 |
+|      101 |        7 |  1290 | 2023-08-15 |
+|      106 |        5 |   670 | 2023-08-12 |
+|      102 |        5 |   750 | 2023-08-16 |
+|      107 |        3 |   299 | 2023-08-16 |
+|      103 |        2 |   205 | 2023-08-15 |
++----------+----------+-------+------------+
+15 rows in set (0.001 sec)
+
+
+MariaDB [mis406]> alter table customers add column WorkingEXPYears int after salary;
+Query OK, 0 rows affected (0.016 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+MariaDB [mis406]> select * from customers;
++----+---------+------------+-----------+------------+--------+-----------------+
+| ID | orderID | first_name | last_name | DOB        | salary | WorkingEXPYears |
++----+---------+------------+-----------+------------+--------+-----------------+
+|  1 |     101 | Kamrul     | Ahsan     | 1998-05-08 |  40000 |            NULL |
+|  2 |     102 | Sayem      | Mollah    | 1998-09-04 |  39000 |            NULL |
+|  3 |     103 | Amit       | Shanto    | 1999-02-22 |  39000 |            NULL |
+|  4 |     104 | Sohan      | Hossain   | 1998-02-25 |  40000 |            NULL |
+|  5 |     105 | Rizwan     | Hassan    | 1998-09-25 |  41000 |            NULL |
+|  6 |     106 | Samaun     | Hossain   | 2000-04-17 |  35000 |            NULL |
+|  7 |     107 | Farhan     | Kabir     | 2000-05-25 |  34500 |            NULL |
+|  8 |     108 | Sadid      | Hossain   | 2001-01-18 |  35500 |            NULL |
+|  9 |     109 | Shoaib     | Khan      | 2001-07-29 |  35500 |            NULL |
+| 10 |     110 | Sarhan     | Hassan    | 1996-10-31 |  42000 |            NULL |
+| 11 |     111 | ASM        | Farhan    | 1996-05-18 |  45000 |            NULL |
++----+---------+------------+-----------+------------+--------+-----------------+
+11 rows in set (0.001 sec)
+
++------------------------------------------------------------------+
+|15. Join (Inner, Left, Right)                                     |
++------------------------------------------------------------------+
+MariaDB [mis406]> select customers.first_name, orders.order_id, orders.quantity
+    -> from customers
+    -> inner join orders on customers.orderID = orders.order_id;
++------------+----------+----------+
+| first_name | order_id | quantity |
++------------+----------+----------+
+| Kamrul     |      101 |        5 |
+| Sayem      |      102 |        4 |
+| Amit       |      103 |        2 |
+| Sohan      |      104 |        2 |
+| Rizwan     |      105 |        2 |
+| Samaun     |      106 |        8 |
+| Farhan     |      107 |        5 |
+| Sadid      |      108 |        3 |
+| Sarhan     |      110 |        9 |
+| Rizwan     |      105 |        4 |
+| Kamrul     |      101 |        7 |
+| Samaun     |      106 |        5 |
+| Sayem      |      102 |        5 |
+| Farhan     |      107 |        3 |
+| Amit       |      103 |        2 |
++------------+----------+----------+
+15 rows in set (0.001 sec)
+MariaDB [mis406]> select customers.first_name, orders.order_id, orders.quantity
+    -> from customers
+    -> left join orders on customers.orderID = orders.order_id;
++------------+----------+----------+
+| first_name | order_id | quantity |
++------------+----------+----------+
+| Kamrul     |      101 |        5 |
+| Sayem      |      102 |        4 |
+| Amit       |      103 |        2 |
+| Sohan      |      104 |        2 |
+| Rizwan     |      105 |        2 |
+| Samaun     |      106 |        8 |
+| Farhan     |      107 |        5 |
+| Sadid      |      108 |        3 |
+| Sarhan     |      110 |        9 |
+| Rizwan     |      105 |        4 |
+| Kamrul     |      101 |        7 |
+| Samaun     |      106 |        5 |
+| Sayem      |      102 |        5 |
+| Farhan     |      107 |        3 |
+| Amit       |      103 |        2 |
+| Shoaib     |     NULL |     NULL |
++------------+----------+----------+
+16 rows in set (0.002 sec)
+MariaDB [mis406]> select customers.orderid,customers.first_name,orders.orderdate
+    -> from customers
+    -> right join orders on customers.orderid=orders.order_id;
++---------+------------+------------+
+| orderid | first_name | orderdate  |
++---------+------------+------------+
+|     101 | Kamrul     | 2023-08-05 |
+|     101 | Kamrul     | 2023-08-15 |
+|     102 | Sayem      | 2023-08-06 |
+|     102 | Sayem      | 2023-08-16 |
+|     103 | Amit       | 2023-08-04 |
+|     103 | Amit       | 2023-08-15 |
+|     104 | Sohan      | 2023-08-04 |
+|     105 | Rizwan     | 2023-08-10 |
+|     105 | Rizwan     | 2023-08-15 |
+|     106 | Samaun     | 2023-08-14 |
+|     106 | Samaun     | 2023-08-12 |
+|     107 | Farhan     | 2023-08-05 |
+|     107 | Farhan     | 2023-08-16 |
+|     108 | Sadid      | 2023-08-01 |
+|     110 | Sarhan     | 2023-08-10 |
++---------+------------+------------+
+15 rows in set (0.001 sec)
+
++------------------------------------------------------------------+
+|16. Key (Primary, Foreign)                                        |
++------------------------------------------------------------------+
+MariaDB [mis406]> create table products(productid int primary key,ProductName varchar(30),
+    -> orderid int,
+    -> foreign key(orderid) references customers(id));
+Query OK, 0 rows affected (0.013 sec)
+
+MariaDB [mis406]> desc products;
++-------------+-------------+------+-----+---------+-------+
+| Field       | Type        | Null | Key | Default | Extra |
++-------------+-------------+------+-----+---------+-------+
+| productid   | int(11)     | NO   | PRI | NULL    |       |
+| ProductName | varchar(30) | YES  |     | NULL    |       |
+| orderid     | int(11)     | YES  | MUL | NULL    |       |
++-------------+-------------+------+-----+---------+-------+
+3 rows in set (0.006 sec)
++------------------------------------------------------------------+
+|17. Math (Floor, Ceiling, Round, SQRT, Power, Greatest, Least)    |
++------------------------------------------------------------------+
+MariaDB [mis406]> select first_name,orderid,quantity,price,
+    -> round((price/quantity),2)as unit_cost
+    -> from customers,orders
+    -> where customers.orderid=orders.order_id order by orders.quantity desc;
++------------+---------+----------+-------+-----------+
+| first_name | orderid | quantity | price | unit_cost |
++------------+---------+----------+-------+-----------+
+| Sarhan     |     110 |        9 |  1950 |    216.67 |
+| Samaun     |     106 |        8 |  1050 |    131.25 |
+| Kamrul     |     101 |        7 |  1290 |    184.29 |
+| Kamrul     |     101 |        5 |   500 |    100.00 |
+| Samaun     |     106 |        5 |   670 |    134.00 |
+| Sayem      |     102 |        5 |   750 |    150.00 |
+| Farhan     |     107 |        5 |   600 |    120.00 |
+| Rizwan     |     105 |        4 |   560 |    140.00 |
+| Sayem      |     102 |        4 |   950 |    237.50 |
+| Sadid      |     108 |        3 |   210 |     70.00 |
+| Farhan     |     107 |        3 |   299 |     99.67 |
+| Amit       |     103 |        2 |   100 |     50.00 |
+| Sohan      |     104 |        2 |   100 |     50.00 |
+| Amit       |     103 |        2 |   205 |    102.50 |
+| Rizwan     |     105 |        2 |   350 |    175.00 |
++------------+---------+----------+-------+-----------+
+15 rows in set (0.001 sec)
+
+MariaDB [mis406]> select first_name,orderid,quantity,price,
+    -> floor(price/quantity)as unit_cost
+    -> from customers,orders
+    -> where customers.orderid=orders.order_id order by orders.quantity desc;
++------------+---------+----------+-------+-----------+
+| first_name | orderid | quantity | price | unit_cost |
++------------+---------+----------+-------+-----------+
+| Sarhan     |     110 |        9 |  1950 |       216 |
+| Samaun     |     106 |        8 |  1050 |       131 |
+| Kamrul     |     101 |        7 |  1290 |       184 |
+| Kamrul     |     101 |        5 |   500 |       100 |
+| Samaun     |     106 |        5 |   670 |       134 |
+| Sayem      |     102 |        5 |   750 |       150 |
+| Farhan     |     107 |        5 |   600 |       120 |
+| Rizwan     |     105 |        4 |   560 |       140 |
+| Sayem      |     102 |        4 |   950 |       237 |
+| Sadid      |     108 |        3 |   210 |        70 |
+| Farhan     |     107 |        3 |   299 |        99 |
+| Amit       |     103 |        2 |   100 |        50 |
+| Sohan      |     104 |        2 |   100 |        50 |
+| Amit       |     103 |        2 |   205 |       102 |
+| Rizwan     |     105 |        2 |   350 |       175 |
++------------+---------+----------+-------+-----------+
+15 rows in set (0.002 sec)
+
+MariaDB [mis406]> select first_name,orderid,quantity,price,
+    -> ceiling(price/quantity)as unit_cost
+    -> from customers,orders
+    -> where customers.orderid=orders.order_id order by orders.quantity desc;
++------------+---------+----------+-------+-----------+
+| first_name | orderid | quantity | price | unit_cost |
++------------+---------+----------+-------+-----------+
+| Sarhan     |     110 |        9 |  1950 |       217 |
+| Samaun     |     106 |        8 |  1050 |       132 |
+| Kamrul     |     101 |        7 |  1290 |       185 |
+| Farhan     |     107 |        5 |   600 |       120 |
+| Kamrul     |     101 |        5 |   500 |       100 |
+| Samaun     |     106 |        5 |   670 |       134 |
+| Sayem      |     102 |        5 |   750 |       150 |
+| Rizwan     |     105 |        4 |   560 |       140 |
+| Sayem      |     102 |        4 |   950 |       238 |
+| Sadid      |     108 |        3 |   210 |        70 |
+| Farhan     |     107 |        3 |   299 |       100 |
+| Amit       |     103 |        2 |   100 |        50 |
+| Sohan      |     104 |        2 |   100 |        50 |
+| Amit       |     103 |        2 |   205 |       103 |
+| Rizwan     |     105 |        2 |   350 |       175 |
++------------+---------+----------+-------+-----------+
+15 rows in set (0.001 sec)
+
+MariaDB [mis406]> select first_name,orderid,quantity,price,
+    -> round(sqrt(price/quantity),3)as unit_cost_sqrt
+    -> from customers,orders
+    -> where customers.orderid=orders.order_id order by orders.quantity desc;
++------------+---------+----------+-------+----------------+
+| first_name | orderid | quantity | price | unit_cost_sqrt |
++------------+---------+----------+-------+----------------+
+| Sarhan     |     110 |        9 |  1950 |         14.720 |
+| Samaun     |     106 |        8 |  1050 |         11.456 |
+| Kamrul     |     101 |        7 |  1290 |         13.575 |
+| Farhan     |     107 |        5 |   600 |         10.954 |
+| Kamrul     |     101 |        5 |   500 |         10.000 |
+| Samaun     |     106 |        5 |   670 |         11.576 |
+| Sayem      |     102 |        5 |   750 |         12.247 |
+| Rizwan     |     105 |        4 |   560 |         11.832 |
+| Sayem      |     102 |        4 |   950 |         15.411 |
+| Sadid      |     108 |        3 |   210 |          8.367 |
+| Farhan     |     107 |        3 |   299 |          9.983 |
+| Amit       |     103 |        2 |   100 |          7.071 |
+| Sohan      |     104 |        2 |   100 |          7.071 |
+| Amit       |     103 |        2 |   205 |         10.124 |
+| Rizwan     |     105 |        2 |   350 |         13.229 |
++------------+---------+----------+-------+----------------+
+15 rows in set (0.001 sec)
+
+MariaDB [mis406]> select quantity,power(quantity,2) as squared_quantity from orders;
++----------+------------------+
+| quantity | squared_quantity |
++----------+------------------+
+|        5 |               25 |
+|        4 |               16 |
+|        2 |                4 |
+|        2 |                4 |
+|        2 |                4 |
+|        8 |               64 |
+|        5 |               25 |
+|        3 |                9 |
+|        9 |               81 |
+|        4 |               16 |
+|        7 |               49 |
+|        5 |               25 |
+|        5 |               25 |
+|        3 |                9 |
+|        2 |                4 |
++----------+------------------+
+15 rows in set (0.001 sec)
+
+MariaDB [mis406]> select first_name, last_name,
+    -> salary from customers
+    -> where salary= greatest(salary,40000);
++------------+-----------+--------+
+| first_name | last_name | salary |
++------------+-----------+--------+
+| Kamrul     | Ahsan     |  40000 |
+| Sohan      | Hossain   |  40000 |
+| Rizwan     | Hassan    |  41000 |
+| Sarhan     | Hassan    |  42000 |
++------------+-----------+--------+
+4 rows in set (0.000 sec)
+MariaDB [mis406]> select first_name, last_name,
+    -> salary from customers
+    -> where salary= least(salary,35000);
++------------+-----------+--------+
+| first_name | last_name | salary |
++------------+-----------+--------+
+| Samaun     | Hossain   |  35000 |
+| Farhan     | Kabir     |  34500 |
++------------+-----------+--------+
+2 rows in set (0.001 sec)
+
+MariaDB [mis406]>
+
++------------------------------------------------------------------+
+|18. String (LENGTH, LEFT, MID, RIGHT, LOWER, UPPER, SUBSTRING)    |
++------------------------------------------------------------------+
+MariaDB [mis406]> select first_name,length(first_name)as namelen from customers;
++------------+---------+
+| first_name | namelen |
++------------+---------+
+| Kamrul     |       6 |
+| Sayem      |       5 |
+| Amit       |       4 |
+| Sohan      |       5 |
+| Rizwan     |       6 |
+| Samaun     |       6 |
+| Farhan     |       6 |
+| Sadid      |       5 |
+| Shoaib     |       6 |
+| Sarhan     |       6 |
++------------+---------+
+10 rows in set (0.000 sec)
+MariaDB [mis406]> select last_name, left(last_name, 2) as first_initial from customers;
++-----------+---------------+
+| last_name | first_initial |
++-----------+---------------+
+| Ahsan     | Ah            |
+| Mollah    | Mo            |
+| Shanto    | Sh            |
+| Hossain   | Ho            |
+| Hassan    | Ha            |
+| Hossain   | Ho            |
+| Kabir     | Ka            |
+| Hossain   | Ho            |
+| Khan      | Kh            |
+| Hassan    | Ha            |
++-----------+---------------+
+10 rows in set (0.001 sec)
+MariaDB [mis406]> select last_name,mid(last_name,2,3) as midcharacters from customers;
++-----------+---------------+
+| last_name | midcharacters |
++-----------+---------------+
+| Ahsan     | hsa           |
+| Mollah    | oll           |
+| Shanto    | han           |
+| Hossain   | oss           |
+| Hassan    | ass           |
+| Hossain   | oss           |
+| Kabir     | abi           |
+| Hossain   | oss           |
+| Khan      | han           |
+| Hassan    | ass           |
++-----------+---------------+
+10 rows in set (0.000 sec)
+MariaDB [mis406]> select first_name, right(first_name,2) as rightchar from customers;
++------------+-----------+
+| first_name | rightchar |
++------------+-----------+
+| Kamrul     | ul        |
+| Sayem      | em        |
+| Amit       | it        |
+| Sohan      | an        |
+| Rizwan     | an        |
+| Samaun     | un        |
+| Farhan     | an        |
+| Sadid      | id        |
+| Shoaib     | ib        |
+| Sarhan     | an        |
++------------+-----------+
+10 rows in set (0.000 sec)
+MariaDB [mis406]> select concat(first_name,' ',last_name) as FullName, upper(first_name)as upperfn,
+    -> substring(first_name,2,3) as substring_v,
+    -> lower(last_name) as lowerfn from customers;
++----------------+---------+-------------+---------+
+| FullName       | upperfn | substring_v | lowerfn |
++----------------+---------+-------------+---------+
+| Kamrul Ahsan   | KAMRUL  | amr         | ahsan   |
+| Sayem Mollah   | SAYEM   | aye         | mollah  |
+| Amit Shanto    | AMIT    | mit         | shanto  |
+| Sohan Hossain  | SOHAN   | oha         | hossain |
+| Rizwan Hassan  | RIZWAN  | izw         | hassan  |
+| Samaun Hossain | SAMAUN  | ama         | hossain |
+| Farhan Kabir   | FARHAN  | arh         | kabir   |
+| Sadid Hossain  | SADID   | adi         | hossain |
+| Shoaib Khan    | SHOAIB  | hoa         | khan    |
+| Sarhan Hassan  | SARHAN  | arh         | hassan  |
++----------------+---------+-------------+---------+
+10 rows in set (0.001 sec)
+
++------------------------------------------------------------------+
+|19. Flow Control (Case When)                                      |
++------------------------------------------------------------------+
+MariaDB [mis406]> select orderid,concat(first_name,' ',last_name)as Name,
+    -> (quantity*price) as Total,
+    -> case
+    -> when (quantity*price) >= 9000 then '10%'
+    -> when (quantity*price) >= 3000 and (quantity*price) <9000  then '7%'
+    -> when (quantity*price) >= 2000  and (quantity*price) <3000 then '5%'
+    -> when (quantity*price) >= 500  and (quantity*price) <2000 then '3%'
+    -> else 'Please Buy More'
+    -> end as Discount
+    -> from customers,orders where customers.orderid=orders.order_id
+    -> order by total desc;
++---------+----------------+-------+-----------------+
+| orderid | Name           | Total | Discount        |
++---------+----------------+-------+-----------------+
+|     110 | Sarhan Hassan  | 17550 | 10%             |
+|     101 | Kamrul Ahsan   |  9030 | 10%             |
+|     106 | Samaun Hossain |  8400 | 7%              |
+|     102 | Sayem Mollah   |  3800 | 7%              |
+|     102 | Sayem Mollah   |  3750 | 7%              |
+|     106 | Samaun Hossain |  3350 | 7%              |
+|     107 | Farhan Kabir   |  3000 | 7%              |
+|     101 | Kamrul Ahsan   |  2500 | 5%              |
+|     105 | Rizwan Hassan  |  2240 | 5%              |
+|     107 | Farhan Kabir   |   897 | 3%              |
+|     105 | Rizwan Hassan  |   700 | 3%              |
+|     108 | Sadid Hossain  |   630 | 3%              |
+|     103 | Amit Shanto    |   410 | Please Buy More |
+|     103 | Amit Shanto    |   200 | Please Buy More |
+|     104 | Sohan Hossain  |   200 | Please Buy More |
++---------+----------------+-------+-----------------+
+15 rows in set (0.001 sec)
+
+MariaDB [mis406]>
++------------------------------------------------------------------+
+|20. Procedure Function (If statement, Delimiter, LOOP)            |
++------------------------------------------------------------------+
+MariaDB [mis406]> alter table orders add column Revenue int;
+    -> //
+Query OK, 0 rows affected (0.007 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+MariaDB [mis406]> delimiter //
+MariaDB [mis406]> create procedure total()
+    -> begin
+    -> declare a int default (select count(*) from orders);
+    -> declare b int default 1;
+    -> A: loop
+    -> if b>a then leave A; end if;
+    -> update orders set revenue=(quantity*price);
+    -> set b=b+1;
+    -> end loop;
+    -> end//
+Query OK, 0 rows affected (0.006 sec)
+
+MariaDB [mis406]> call total()//
+Query OK, 15 rows affected (0.005 sec)
+
+MariaDB [mis406]> select * from orders;
+    -> //
++----------+----------+-------+------------+---------+
+| order_id | Quantity | Price | OrderDate  | Revenue |
++----------+----------+-------+------------+---------+
+|      101 |        5 |   500 | 2023-08-05 |    2500 |
+|      102 |        4 |   950 | 2023-08-06 |    3800 |
+|      103 |        2 |   100 | 2023-08-04 |     200 |
+|      104 |        2 |   100 | 2023-08-04 |     200 |
+|      105 |        2 |   350 | 2023-08-10 |     700 |
+|      106 |        8 |  1050 | 2023-08-14 |    8400 |
+|      107 |        5 |   600 | 2023-08-05 |    3000 |
+|      108 |        3 |   210 | 2023-08-01 |     630 |
+|      110 |        9 |  1950 | 2023-08-10 |   17550 |
+|      105 |        4 |   560 | 2023-08-15 |    2240 |
+|      101 |        7 |  1290 | 2023-08-15 |    9030 |
+|      106 |        5 |   670 | 2023-08-12 |    3350 |
+|      102 |        5 |   750 | 2023-08-16 |    3750 |
+|      107 |        3 |   299 | 2023-08-16 |     897 |
+|      103 |        2 |   205 | 2023-08-15 |     410 |
++----------+----------+-------+------------+---------+
+15 rows in set (0.001 sec)
+
+
